@@ -1,0 +1,41 @@
+version: "3.5"
+
+services:
+
+  nginx:
+    image: nginx:alpine3.18
+    ports:
+    - 127.0.0.1:80:80
+    volumes:
+    - /srv/www/html:/var/www/html
+    - /srv/nginx/conf:/etc/nginx/conf.d
+    - /srv/nginx/logs:/var/log/nginx
+
+  php-fpm:
+    build:
+      context: php-fpm
+    volumes:
+    - /srv/www/html:/var/www/html:rw
+
+  php:
+    build:
+      context: php
+    ports:
+    - 127.0.0.1:81:80
+    volumes:
+    - /srv/www/html:/var/www/html:rw
+
+  mardiadb:
+    image: mariadb:11.2
+    ports:
+    - 127.0.0.1:3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
+    volumes:
+    - databases_mysql:/var/lib/mysql  
+
+volumes: 
+  databases_mysql:

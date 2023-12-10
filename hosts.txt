@@ -1,0 +1,16 @@
+[home_servers]
+# vnware_1  ansible_host=192.168.1.133  ansible_user=wsq 
+
+[beget_servers]
+beget_1  ansible_host=45.141.79.199   ansible_user=root 
+
+
+[ALL_SERVERS:children]
+beget_servers
+home_servers
+
+
+[ALL_SERVERS:vars]
+ansible_private_key_file  = /home/wsq/.ssh/id_rsa
+
+

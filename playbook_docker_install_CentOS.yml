@@ -37,3 +37,22 @@
     #     name: ansible
     #     groups: docker
     #     append: yes
+
+    - name: Copy /srv/ on server
+      copy:
+        src: ./srv
+        dest: /
+        mode: 0777
+
+    - name: Copy /docker-lamp/ on server
+      copy:
+        src: ./docker-lamp
+        dest: /
+        mode: 0777
+
+
+    - name: Run container
+      shell:
+        cmd: "docker compose up -d"
+        chdir: /docker-lamp    
+

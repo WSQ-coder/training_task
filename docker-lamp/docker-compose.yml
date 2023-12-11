@@ -5,7 +5,8 @@ services:
   nginx:
     image: nginx:alpine3.18
     networks:
-      - myNet192
+      myNet192:
+        ipv4_address: 192.168.111.2
     ports:
     - 80:80
     volumes:
@@ -17,7 +18,8 @@ services:
     build:
       context: php-fpm
     networks:
-      - myNet192
+      myNet192:
+        ipv4_address: 192.168.111.3
     volumes:
     - /srv/www/html:/var/www/html:rw
 
@@ -25,7 +27,8 @@ services:
     build:
       context: php
     networks:
-      - myNet192
+      myNet192:
+        ipv4_address: 192.168.111.4
     ports:
     - 81:80
     volumes:
@@ -34,7 +37,8 @@ services:
   mardiadb:
     image: mariadb:11.2
     networks:
-      - myNet192
+      myNet192:
+        ipv4_address: 192.168.111.5
     ports:
     - 3306:3306
     environment:
@@ -54,4 +58,3 @@ networks:
       driver: default
       config:
         - subnet: 192.168.111.0/24
-          gateway: 192.168.111.1

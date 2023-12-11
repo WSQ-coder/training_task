@@ -9,6 +9,7 @@ services:
         ipv4_address: 192.168.111.2
     ports:
     - 80:80
+    restart: always
     volumes:
     - /srv/www/html:/var/www/html
     - /srv/nginx/conf:/etc/nginx/conf.d
@@ -20,6 +21,7 @@ services:
     networks:
       myNet192:
         ipv4_address: 192.168.111.3
+    restart: always
     volumes:
     - /srv/www/html:/var/www/html:rw
 
@@ -31,6 +33,7 @@ services:
         ipv4_address: 192.168.111.4
     ports:
     - 81:80
+    restart: always
     volumes:
     - /srv/www/html:/var/www/html:rw
 
@@ -41,6 +44,7 @@ services:
         ipv4_address: 192.168.111.5
     ports:
     - 3306:3306
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootroot
       MYSQL_DATABASE: testdb
@@ -57,9 +61,11 @@ services:
         ipv4_address: 192.168.111.6
     ports:
       - "3000:3000"
+    restart: always
     volumes:
       - grafana-data:/var/lib/grafana
       - grafana-configs:/etc/grafana
+
   prometheus:
     image: prom/prometheus:v2.48.0
     networks:
@@ -67,9 +73,11 @@ services:
         ipv4_address: 192.168.111.7
     ports:
       - "9090:9090"
+    restart: always
     volumes:
       - prom-data:/prometheus
       - prom-configs:/etc/prometheus
+
   node-exporter:
     image: prom/node-exporter:v1.7.0
     networks:
@@ -77,6 +85,7 @@ services:
         ipv4_address: 192.168.111.8
     ports:
       - "9100:9100"
+    restart: always
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -87,7 +96,7 @@ services:
       - '--collector.filesystem.mount-points-exclude'
       - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
 
-
+#  bitnami/nginx-exporter:0.11.0
 
 
 

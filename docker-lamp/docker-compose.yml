@@ -4,8 +4,10 @@ services:
 
   nginx:
     image: nginx:alpine3.18
+    networks:
+      - myNet192
     ports:
-    - 0.0.0.0:80:80
+    - 80:80
     volumes:
     - /srv/www/html:/var/www/html
     - /srv/nginx/conf:/etc/nginx/conf.d
@@ -14,21 +16,27 @@ services:
   php-fpm:
     build:
       context: php-fpm
+    networks:
+      - myNet192
     volumes:
     - /srv/www/html:/var/www/html:rw
 
   php:
     build:
       context: php
+    networks:
+      - myNet192
     ports:
-    - 0.0.0.0:81:80
+    - 81:80
     volumes:
     - /srv/www/html:/var/www/html:rw
 
   mardiadb:
     image: mariadb:11.2
+    networks:
+      - myNet192
     ports:
-    - 0.0.0.0:3306:3306
+    - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: rootroot
       MYSQL_DATABASE: testdb
@@ -37,5 +45,13 @@ services:
     volumes:
     - databases_mysql:/var/lib/mysql  
 
-volumes: 
+
+volumes:
   databases_mysql:
+networks:
+  myNet192:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.111.0/24
+          gateway: 192.168.111.1
